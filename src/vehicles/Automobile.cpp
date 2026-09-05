@@ -213,6 +213,13 @@ CAutomobile::SetModelIndex(uint32 id)
 {
 	CVehicle::SetModelIndex(id);
 	SetupModelNodes();
+
+	static const int32 doorNodes[] = {
+		CAR_BONNET, CAR_BOOT, CAR_DOOR_LF, CAR_DOOR_RF, CAR_DOOR_LR, CAR_DOOR_RR
+	};
+	for(int32 i = 0; i < ARRAY_SIZE(doorNodes); i++)
+		if(m_aCarNodes[doorNodes[i]])
+			m_aDoorBaseMatrices[i] = *RwFrameGetMatrix(m_aCarNodes[doorNodes[i]]);
 }
 
 CVector vecDAMAGE_ENGINE_POS_SMALL(-0.1f, -0.1f, 0.0f);
@@ -4381,12 +4388,12 @@ void
 CAutomobile::SetDoorRotation(int32 component, eDoors door, float angle)
 {
 	CMatrix mat(RwFrameGetMatrix(m_aCarNodes[component]));
-	CVector pos = mat.GetPosition();
+	CMatrix base(&m_aDoorBaseMatrices[door]);
 	float axes[3] = { 0.0f, 0.0f, 0.0f };
 
 	axes[Doors[door].m_nAxis] = angle;
-	mat.SetRotate(axes[0], axes[1], axes[2]);
-	mat.Translate(pos);
+	mat.CopyOnlyMatrix(base);
+	mat.Rotate(axes[0], axes[1], axes[2]);
 	mat.UpdateRW();
 }
 

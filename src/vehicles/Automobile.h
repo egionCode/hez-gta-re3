@@ -62,6 +62,7 @@ public:
 	CDamageManager Damage;
 	CDoor Doors[6];
 	RwFrame *m_aCarNodes[NUM_CAR_NODES];
+	RwMatrix m_aDoorBaseMatrices[6];
 	CColPoint m_aWheelColPoints[4];
 	float m_aSuspensionSpringRatio[4];
 	float m_aSuspensionSpringRatioPrev[4];
