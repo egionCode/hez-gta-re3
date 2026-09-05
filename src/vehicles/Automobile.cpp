@@ -3708,6 +3708,7 @@ CAutomobile::OpenDoor(int32 component, eDoors door, float openRatio)
 		// door closed
 		if(Damage.GetDoorStatus(door) == DOOR_STATUS_SWINGING)
 			Damage.SetDoorStatus(door, DOOR_STATUS_OK);	// huh?
+		Doors[door].m_fPrevAngle = Doors[door].m_fAngle;
 		ShowAllComps();
 		DMAudio.PlayOneShot(m_audioEntityId, SOUND_CAR_DOOR_CLOSE_BONNET + door, 0.0f);
 	}
