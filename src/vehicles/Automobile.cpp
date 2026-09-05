@@ -4389,11 +4389,13 @@ CAutomobile::SetDoorRotation(int32 component, eDoors door, float angle)
 {
 	CMatrix mat(RwFrameGetMatrix(m_aCarNodes[component]));
 	CMatrix base(&m_aDoorBaseMatrices[door]);
+	CMatrix rotation;
 	float axes[3] = { 0.0f, 0.0f, 0.0f };
 
 	axes[Doors[door].m_nAxis] = angle;
-	mat.CopyOnlyMatrix(base);
-	mat.Rotate(axes[0], axes[1], axes[2]);
+	rotation.SetRotate(axes[0], axes[1], axes[2]);
+	mat.CopyOnlyMatrix(rotation * base);
+	mat.GetPosition() = base.GetPosition();
 	mat.UpdateRW();
 }
 
